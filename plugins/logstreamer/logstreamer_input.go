@@ -398,6 +398,13 @@ func (lsi *LogstreamInput) packDecorator(pack *p.PipelinePack) {
 	pack.Message.SetType("logfile")
 	pack.Message.SetHostname(lsi.hostName)
 	pack.Message.SetLogger(lsi.loggerIdent)
+
+	fname, _ := lsi.stream.ReportPosition()
+	hash, bytes := lsi.stream.RevealPositionHash()
+	message.NewStringField(pack.Message, "file", fname)
+	message.NewInt64Field(pack.Message, "offset", bytes, "count")
+	message.NewStringField(pack.Message, "hash", hash)
+	message.NewInt64Field(pack.Message, "timestamp", time.Now().UnixNano(), "count")
 }
 
 func (lsi *LogstreamInput) countRecord() {

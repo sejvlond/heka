@@ -341,6 +341,10 @@ func (l *Logstream) ReportPosition() (string, int64) {
 	return l.position.Filename, l.position.SeekPosition
 }
 
+func (l *Logstream) RevealPositionHash() (string, int64) {
+	return l.position.Hash, l.position.HashPosition
+}
+
 // Updates the logfiles safely
 func (l *Logstream) UpdateLogfiles(logfiles Logfiles) {
 	l.lfMutex.Lock()

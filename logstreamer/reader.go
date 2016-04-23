@@ -34,6 +34,7 @@ type LogstreamLocation struct {
 	SeekPosition int64  `json:"seek"`
 	Filename     string `json:"file_name"`
 	Hash         string `json:"last_hash"`
+	HashPosition int64  `json:"-"` // SeekPosition valid for Hash
 	JournalPath  string `json:"-"`
 	lastLine     *ringbuf.Ringbuf
 }
@@ -121,6 +122,7 @@ func (l *LogstreamLocation) GenerateHash() {
 		h := sha1.New()
 		io.WriteString(h, logline)
 		l.Hash = fmt.Sprintf("%x", h.Sum(nil))
+		l.HashPosition = l.SeekPosition
 	}
 }
 
